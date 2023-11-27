@@ -2,6 +2,7 @@ package com.dio.santander.bankline.api.modelo;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,12 +18,20 @@ public class Movimentacao {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
 	private Integer id;
+	
+	@Column(name = "data_hora")
 	private LocalDateTime dataHora;
+	
 	private String descricao;
+	
 	private Double valor;
 	
 	@Enumerated(EnumType.STRING)
 	private tipomovimentacao tipo;
+	
+	@Column(name = "id_conta")
+	private Integer idConta;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -52,6 +61,12 @@ public class Movimentacao {
 	}
 	public void setTipo(tipomovimentacao tipo) {
 		this.tipo = tipo;
+	}
+	public Integer getIdConta() {
+		return idConta;
+	}
+	public void setIdConta(Integer idConta) {
+		this.idConta = idConta;
 	}
 	
 	
