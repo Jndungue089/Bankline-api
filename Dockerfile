@@ -1,6 +1,7 @@
 FROM ubuntu:latest AS build
 
 RUN apt-get update
+RUN apt-get install wget
 RUN wget https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.deb
 RUN sudo apt install ./jdk-21_linux-x64_bin.deb
 
