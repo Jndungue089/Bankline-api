@@ -11,6 +11,7 @@ public class BanklineApiApplication{
 	public static void main(String[] args) {
 		SpringApplication.run(BanklineApiApplication.class, args);
 		//Início do código do App
+		
 	}
 
 }
