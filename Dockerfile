@@ -21,10 +21,14 @@ WORKDIR /app
 # Copy the Maven project files
 COPY . .
 
+# Set JAVA_HOME environment variable for Maven
+ENV JAVA_HOME /usr/lib/jvm/jdk-21
+ENV PATH $PATH:$JAVA_HOME/bin
+
 # Install Maven and build the project
 RUN apt-get install maven -y && \
-    mvn clean install
-
+    JAVA_HOME=/usr/lib/jvm/jdk-21 mvn clean install
+    
 # Create a new image with a smaller base image
 FROM openjdk:21-jdk-slim
 
