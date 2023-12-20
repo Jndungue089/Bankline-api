@@ -15,6 +15,9 @@ RUN dpkg -i jdk-21_linux-x64_bin.deb
 ENV JAVA_HOME /usr/lib/jvm/jdk-21
 ENV PATH $PATH:$JAVA_HOME/bin
 
+ENV DEBIAN_FRONTEND=noninteractive
+RUN ln -fs /usr/share/zoneinfo/UTC /etc/localtime
+
 # Install Maven with debugging output
 RUN apt-get install maven -y -o Debug::pkgProblemResolver=yes
 
