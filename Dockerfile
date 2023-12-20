@@ -28,6 +28,11 @@ ENV PATH $PATH:$JAVA_HOME/bin
 # Install Maven with debugging output
 RUN apt-get install maven -y -o Debug::pkgProblemResolver=yes
 
+RUN rm -rf ~/.m2/repository
+
+# Print Maven version
+RUN mvn -v
+
 # Build the project with Maven (separate commands)
 RUN mvn clean
 RUN mvn install
