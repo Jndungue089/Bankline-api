@@ -25,10 +25,12 @@ COPY . .
 ENV JAVA_HOME /usr/lib/jvm/jdk-21
 ENV PATH $PATH:$JAVA_HOME/bin
 
-# Install Maven and build the project
-RUN apt-get install maven -y && \
-    JAVA_HOME=/usr/lib/jvm/jdk-21 mvn clean install
-    
+# Install Maven with debugging output
+RUN apt-get install maven -y -o Debug::pkgProblemResolver=yes
+
+# Build the project with Maven
+RUN mvn clean install
+
 # Create a new image with a smaller base image
 FROM openjdk:21-jdk-slim
 
