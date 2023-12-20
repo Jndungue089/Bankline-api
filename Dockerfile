@@ -1,18 +1,39 @@
-FROM ubuntu:latest AS build
+# Use a specific version of Ubuntu as the base image
+FROM ubuntu:20.04 AS build
 
-RUN apt-get update
-RUN curl -O https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.deb
-RUN sudo apt install ./jdk-21_linux-x64_bin.deb
+# Install necessary tools
+RUN apt-get update && \
+    apt-get install -y curl sudo
 
+# Download and install Oracle JDK
+RUN curl -O https://download.oracle.com/java/16/latest/jdk-16_linux-x64_bin.deb
+RUN sudo apt install ./jdk-16_linux-x64_bin.deb
+
+# Set JAVA_HOME environment variable
+ENV JAVA_HOME /usr/lib/jvm/jdk-16
+ENV PATH $PATH:$JAVA_HOME/bin
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the Maven project files
 COPY . .
 
-RUN apt-get install maven -y
-RUN mvn clean install
+# Install Maven and build the project
+RUN apt-get install maven -y && \
+    mvn clean install
 
-FROM openjdk:21-jdk-slim
+# Create a new image with a smaller base image
+FROM openjdk:16-jdk-slim
 
+# Set the working directory
+WORKDIR /app
+
+# Expose the port
 EXPOSE 8080
 
-COPY --from=build target\bankline-api-0.0.1-SNAPSHOT.jar app.jar
+# Copy the JAR file from the build stage
+COPY --from=build /app/target/bankline-api-0.0.1-SNAPSHOT.jar app.jar
 
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+# Set the entry point
+ENTRYPOINT ["java", "-jar", "app.jar"]
