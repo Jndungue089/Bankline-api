@@ -5,9 +5,11 @@ FROM ubuntu:20.04 AS build
 RUN apt-get update && \
     apt-get install -y curl sudo
 
-# Download and install Oracle JDK
+# Download Oracle JDK
 RUN curl -O https://download.oracle.com/java/16/latest/jdk-16_linux-x64_bin.deb
-RUN sudo apt install ./jdk-16_linux-x64_bin.deb
+
+# Manually install the Oracle JDK package
+RUN dpkg -i jdk-16_linux-x64_bin.deb
 
 # Set JAVA_HOME environment variable
 ENV JAVA_HOME /usr/lib/jvm/jdk-16
