@@ -16,4 +16,3 @@ COPY --from=build /target/bankline-api-0.0.1-SNAPSHOT.jar app.jar
 
 # Set the entry point
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
