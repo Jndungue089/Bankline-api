@@ -29,7 +29,10 @@ ENV PATH $PATH:$JAVA_HOME/bin
 RUN apt-get install maven -y -o Debug::pkgProblemResolver=yes
 
 # Build the project with Maven
-RUN mvn clean install -X
+RUN mvn clean install -y
+
+# Set JAVA_HOME environment variable for subsequent commands
+ENV JAVA_HOME /usr/lib/jvm/jdk-21
 
 # Create a new image with a smaller base image
 FROM openjdk:21-jdk-slim
