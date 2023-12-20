@@ -21,15 +21,16 @@ WORKDIR /app
 # Copy the Maven project files
 COPY . .
 
-# Set JAVA_HOME environment variable for Maven
+## Set JAVA_HOME environment variable for Maven
 ENV JAVA_HOME /usr/lib/jvm/jdk-21
 ENV PATH $PATH:$JAVA_HOME/bin
 
 # Install Maven with debugging output
 RUN apt-get install maven -y -o Debug::pkgProblemResolver=yes
 
-# Build the project with Maven
-RUN mvn clean install -y
+# Build the project with Maven (separate commands)
+RUN mvn clean
+RUN mvn install
 
 # Set JAVA_HOME environment variable for subsequent commands
 ENV JAVA_HOME /usr/lib/jvm/jdk-21
