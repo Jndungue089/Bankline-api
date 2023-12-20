@@ -1,45 +1,14 @@
-# Use a specific version of Ubuntu as the base image
-FROM ubuntu:20.04 AS build
+FROM ubuntu:latest AS build
 
-# Install necessary tools
-RUN apt-get update && \
-    apt-get install -y curl sudo
+RUN apt-get update
+RUN apt-get install openjdk-17-jdk -y
+COPY . .
 
-# Download Oracle JDK 21
-RUN curl -O https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.deb
+RUN apt-get install maven -y
+RUN mvn clean install 
 
-# Manually install the Oracle JDK package
-RUN dpkg -i jdk-21_linux-x64_bin.deb
+FROM openjdk:17-jdk-slim
 
-# Set JAVA_HOME environment variable
-ENV JAVA_HOME /usr/lib/jvm/jdk-21
-ENV PATH $PATH:$JAVA_HOME/bin
-
-ENV DEBIAN_FRONTEND=noninteractive
-RUN ln -fs /usr/share/zoneinfo/UTC /etc/localtime
-
-# Install Maven with debugging output
-RUN apt-get install maven -y -o Debug::pkgProblemResolver=yes
-
-RUN rm -rf ~/.m2/repository
-
-# Print Maven version
-RUN mvn -v
-
-# Build the project with Maven (separate commands)
-RUN mvn clean
-RUN mvn install
-
-# Set JAVA_HOME environment variable for subsequent commands
-ENV JAVA_HOME /usr/lib/jvm/jdk-21
-
-# Create a new image with a smaller base image
-FROM openjdk:21-jdk-slim
-
-# Set the working directory
-WORKDIR /app
-
-# Expose the port
 EXPOSE 8080
 
 # Copy the JAR file from the build stage
