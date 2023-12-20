@@ -5,14 +5,14 @@ FROM ubuntu:20.04 AS build
 RUN apt-get update && \
     apt-get install -y curl sudo
 
-# Download Oracle JDK
-RUN curl -O https://download.oracle.com/java/16/latest/jdk-16_linux-x64_bin.deb
+# Download Oracle JDK 21
+RUN curl -O https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.deb
 
 # Manually install the Oracle JDK package
-RUN dpkg -i jdk-16_linux-x64_bin.deb
+RUN dpkg -i jdk-21_linux-x64_bin.deb
 
 # Set JAVA_HOME environment variable
-ENV JAVA_HOME /usr/lib/jvm/jdk-16
+ENV JAVA_HOME /usr/lib/jvm/jdk-21
 ENV PATH $PATH:$JAVA_HOME/bin
 
 # Set the working directory in the container
@@ -26,7 +26,7 @@ RUN apt-get install maven -y && \
     mvn clean install
 
 # Create a new image with a smaller base image
-FROM openjdk:16-jdk-slim
+FROM openjdk:21-jdk-slim
 
 # Set the working directory
 WORKDIR /app
